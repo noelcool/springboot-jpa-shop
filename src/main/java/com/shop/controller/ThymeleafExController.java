@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping(value = "/thymeleaf")
 public class ThymeleafExController {
 
+
     @GetMapping(value = "/ex01")
     public String thymeleafExample01(Model model) {
         model.addAttribute("data", "ㅌㅏ임리프 예제임");
