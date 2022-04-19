@@ -38,7 +38,7 @@ public class Member {
         member.setAddress(dto.getAddress());
         String password = passwordEncoder.encode(dto.getPassword());
         member.setPassword(password);
-        member.setRole(Role.USER);
+        member.setRole(Role.ADMIN);
         return member;
     }
 }
