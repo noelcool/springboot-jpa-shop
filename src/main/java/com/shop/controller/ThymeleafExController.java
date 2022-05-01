@@ -25,7 +25,7 @@ public class ThymeleafExController {
     public String thymeleafExample02(Model model) {
         ItemDto dto = new ItemDto();
         dto.setItemDetail("상품 상세 설명");
-        dto.setItemName("테스트 상품1");
+        dto.setItemNm("테스트 상품1");
         dto.setPrice(10000);
         dto.setRegTime(LocalDateTime.now());
         model.addAttribute("itemDto", dto);
@@ -38,7 +38,7 @@ public class ThymeleafExController {
         for(int i=1; i<=10; i++) {
             ItemDto dto = new ItemDto();
             dto.setItemDetail("상품 상세 설명" + i);
-            dto.setItemName("테스트 상품" + i);
+            dto.setItemNm("테스트 상품" + i);
             dto.setPrice(10000 * i);
             dto.setRegTime(LocalDateTime.now());
             itemDtoList.add(dto);
@@ -53,7 +53,7 @@ public class ThymeleafExController {
         for(int i=1; i<=10; i++) {
             ItemDto dto = new ItemDto();
             dto.setItemDetail("상품 상세 설명" + i);
-            dto.setItemName("테스트 상품" + i);
+            dto.setItemNm("테스트 상품" + i);
             dto.setPrice(10000 * i);
             dto.setRegTime(LocalDateTime.now());
             itemDtoList.add(dto);
@@ -69,7 +69,7 @@ public class ThymeleafExController {
         for(int i=1; i<=10; i++) {
             ItemDto dto = new ItemDto();
             dto.setItemDetail("상품 상세 설명" + i);
-            dto.setItemName("테스트 상품" + i);
+            dto.setItemNm("테스트 상품" + i);
             dto.setPrice(10000 * i);
             dto.setRegTime(LocalDateTime.now());
             itemDtoList.add(dto);

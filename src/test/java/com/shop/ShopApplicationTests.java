@@ -40,7 +40,7 @@ class ShopApplicationTests {
 	@DisplayName("상품 저장 테스트 - 1건")
 	public void createItemTest() {
 		Item item = new Item();
-		item.setItemName("테스트 상품");
+		item.setItemNm("테스트 상품");
 		item.setPrice(10000);
 		item.setItemDetail("테스트 상품 상세 설명");
 		item.setItemSellStatus(ItemSellStatus.SELL);
@@ -56,7 +56,7 @@ class ShopApplicationTests {
 	public void createItemList() {
 		for(int i=1; i<=10; i++) {
 			Item item = new Item();
-			item.setItemName("테스트 상품" + i);
+			item.setItemNm("테스트 상품" + i);
 			item.setPrice(10000 + i);
 			item.setItemDetail("테스트 상품 상세 설명" + i);
 			item.setItemSellStatus(ItemSellStatus.SELL);
@@ -70,9 +70,9 @@ class ShopApplicationTests {
 
 	@Test
 	@DisplayName("상품명 조회 테스트")
-	public void findByItemNameTest() {
+	public void findByitemNmTest() {
 		this.createItemList();
-		List<Item> itemList = itemRepository.findByItemName("테스트 상품1");
+		List<Item> itemList = itemRepository.findByItemNm("테스트 상품1");
 		for(Item item : itemList) {
 			System.out.println("상품명 조회 테스트 ----------" + item.toString());
 		}
@@ -118,7 +118,7 @@ class ShopApplicationTests {
 	public void createItemList2() {
 		for(int i=1; i<=5; i++) {
 			Item item = new Item();
-			item.setItemName("테스트 상품" + i);
+			item.setItemNm("테스트 상품" + i);
 			item.setPrice(10000 + i);
 			item.setItemDetail("테스트 상품 상세 설명" + i);
 			item.setItemSellStatus(ItemSellStatus.SELL);
@@ -130,7 +130,7 @@ class ShopApplicationTests {
 
 		for(int i=6; i<=10; i++) {
 			Item item = new Item();
-			item.setItemName("테스트 상품" + i);
+			item.setItemNm("테스트 상품" + i);
 			item.setPrice(10000 + i);
 			item.setItemDetail("테스트 상품 상세 설명" + i);
 			item.setItemSellStatus(ItemSellStatus.SOLD_OUT);

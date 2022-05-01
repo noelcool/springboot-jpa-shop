@@ -46,7 +46,7 @@ public class OrderTest {
 
     public Item createItem() {
         Item item = new Item();
-        item.setItemName("테스트 상품");
+        item.setItemNm("테스트 상품");
         item.setPrice(10000);
         item.setItemDetail("상세 설명");
         item.setItemSellStatus(ItemSellStatus.SELL);

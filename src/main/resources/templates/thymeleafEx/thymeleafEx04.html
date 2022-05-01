@@ -20,7 +20,7 @@
             <tr th:each="itemDto, status: ${itemDtoList}">
                 <td th:if="${status.even}" th:text="짝수"></td>
                 <td th:unless="${status.even}" th:text="홀수"></td>
-                <td th:text="${itemDto.itemName}"></td>
+                <td th:text="${itemDto.itemNm}"></td>
                 <td th:text="${itemDto.itemDetail}"></td>
                 <td th:text="${itemDto.price}"></td>
                 <td th:text="${itemDto.regTime}"></td>

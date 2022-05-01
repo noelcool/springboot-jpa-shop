@@ -21,7 +21,7 @@ public class Item extends BaseEntity {
     private Long id; //상품 코드
 
     @Column(nullable = false, length = 50)
-    private String itemName;
+    private String itemNm;
 
     @Column(nullable = false)
     private int price;
