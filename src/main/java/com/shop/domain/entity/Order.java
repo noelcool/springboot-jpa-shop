@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "order_id", nullable = false)
@@ -32,10 +32,5 @@ public class Order {
             orphanRemoval = true, // 고아 객체 제거
             fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
-
 
 }
