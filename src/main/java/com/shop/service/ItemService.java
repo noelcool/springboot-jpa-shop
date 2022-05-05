@@ -2,17 +2,19 @@ package com.shop.service;
 
 import com.shop.domain.dto.ItemFormDto;
 import com.shop.domain.dto.ItemImgDto;
+import com.shop.domain.dto.search.ItemSearchDto;
 import com.shop.domain.entity.Item;
 import com.shop.domain.entity.ItemImg;
 import com.shop.repository.ItemImgRepository;
 import com.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +70,11 @@ public class ItemService {
            itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
         }
         return item.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto dto, Pageable pageable) {
+        return itemRepository.getAdminItemPage(dto, pageable);
     }
 
 }
