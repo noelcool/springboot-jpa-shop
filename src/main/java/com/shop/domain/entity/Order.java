@@ -13,6 +13,7 @@ import java.util.List;
 @Getter @Setter
 @Table(name = "orders")
 public class Order extends BaseEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "order_id", nullable = false)
@@ -32,5 +33,25 @@ public class Order extends BaseEntity {
             orphanRemoval = true, // 고아 객체 제거
             fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem); // 주문 상품 정보
+        orderItem.setOrder(this); // order와 orderItem은 양방향 참조이므로 orderItem 객체에도 order 객체를 세팅
+    }
+
+    public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+        Order order = new Order();
+        order.setMember(member);
+        orderItemList.forEach(o -> {
+            order.addOrderItem(o);
+        });
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    public int getTotalPrice() {
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
+    }
 
 }
