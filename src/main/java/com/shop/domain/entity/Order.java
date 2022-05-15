@@ -54,4 +54,11 @@ public class Order extends BaseEntity {
         return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 
+    public void cancelOrder() {
+        this.orderStatus = OrderStatus.CANCEL;
+        orderItems.forEach(o -> {
+           o.cancel();
+        });
+    }
+
 }
