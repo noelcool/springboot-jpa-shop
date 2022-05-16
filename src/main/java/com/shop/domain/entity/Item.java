@@ -10,6 +10,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,6 +40,12 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
+
+    @OneToMany(mappedBy = "item",
+            cascade = CascadeType.ALL, // 부모 엔티티의 영속성 상태 변화를 자식 엔티티에 전이
+            orphanRemoval = true, // 고아 객체 제거
+            fetch = FetchType.LAZY)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @Builder
     public Item(String itemNm, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus) {
