@@ -17,4 +17,11 @@ public class OrderDto {
     @Max(value = 999, message = "최대 주문 수량은 999개 입니다")
     private int count;
 
+    public OrderDto() {}
+
+    public OrderDto(Long itemId, int count) {
+        this.itemId = itemId;
+        this.count = count;
+    }
+
 }

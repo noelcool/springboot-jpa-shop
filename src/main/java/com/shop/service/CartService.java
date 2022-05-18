@@ -2,6 +2,8 @@ package com.shop.service;
 
 import com.shop.domain.dto.CartDetailDto;
 import com.shop.domain.dto.CartItemDto;
+import com.shop.domain.dto.CartOrderDto;
+import com.shop.domain.dto.OrderDto;
 import com.shop.domain.entity.Cart;
 import com.shop.domain.entity.CartItem;
 import com.shop.domain.entity.Item;
@@ -29,6 +31,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderService orderService;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
         Item item = itemRepository.findById(cartItemDto.getItemId()).orElseThrow(EntityExistsException::new);
@@ -82,5 +85,21 @@ public class CartService {
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(EntityNotFoundException::new);
         cartItemRepository.delete(cartItem);
     }
+
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        cartOrderDtoList.forEach(c -> {
+            CartItem cartItem = cartItemRepository.findById(c.getCartItemId()).orElseThrow(EntityNotFoundException::new);
+            orderDtoList.add(new OrderDto(cartItem.getItem().getId(), cartItem.getCount()));
+        });
+        Long orderId = orderService.orders(orderDtoList, email);
+        cartOrderDtoList.forEach(c -> {
+            CartItem cartItem = cartItemRepository.findById(c.getCartItemId()).orElseThrow(EntityNotFoundException::new);
+            cartItemRepository.delete(cartItem);
+        });
+        return orderId;
+    }
+
+
 
 }
