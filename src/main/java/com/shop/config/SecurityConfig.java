@@ -23,17 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception { // http 요청에 대한 보안
         http.formLogin().
-                loginPage("/members/login").
+                loginPage("/login").
                 defaultSuccessUrl("/").
                 usernameParameter("email").
-                failureUrl("/members/login/error").
+                failureUrl("/login/error").
                 and().
                 logout().
                 logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")).
                 logoutSuccessUrl("/");
 
         http.authorizeRequests().
-                mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll().
+                mvcMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**").permitAll().
                 mvcMatchers("/admin/**").hasRole("ADMIN").
                 anyRequest().authenticated();
 

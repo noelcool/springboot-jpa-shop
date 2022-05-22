@@ -4,6 +4,7 @@ import com.shop.domain.dto.CartDetailDto;
 import com.shop.domain.dto.CartItemDto;
 import com.shop.domain.dto.CartOrderDto;
 import com.shop.service.CartService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,13 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Tag(name = "cart", description = "장바구니 API")
+@RequestMapping(path = "/cart")
 public class CartController {
 
     private final CartService cartService;
 
-    @PostMapping(value = "/cart")
+    @PostMapping(value = "")
     public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto,
                                               BindingResult bindingResult,
                                               Principal principal) {
@@ -44,37 +47,14 @@ public class CartController {
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/cart")
+    @GetMapping(value = "")
     public String orderHist(Principal principal, Model model) {
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal.getName());
         model.addAttribute("cartItems", cartDetailDtoList);
         return "cart/cartList";
     }
 
-    @PatchMapping(value = "/cartItem/{cartItemId}")
-    public @ResponseBody ResponseEntity updateCartItem(
-            @PathVariable("cartItemId") Long cartItemId,
-            int count,
-            Principal principal) {
-        if(count <= 0) {
-            return new ResponseEntity<String>("최소 1개 이상 담아주세요", HttpStatus.BAD_REQUEST);
-        } else if(!cartService.validateCartItem(cartItemId, principal.getName())) {
-            return new ResponseEntity<String>("수정 권한이 없습니다", HttpStatus.FORBIDDEN);
-        }
-        cartService.updateCartItemCount(cartItemId, count);
-        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/cartItem/{cartItemId}")
-    public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId, Principal principal) {
-        if(!cartService.validateCartItem(cartItemId, principal.getName())) {
-            return new ResponseEntity<String>("수정 권한이 없습니다", HttpStatus.FORBIDDEN);
-        }
-        cartService.deleteCartItem(cartItemId);
-        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/cart/orders")
+    @PostMapping(value = "/order/list/")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal) {
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
         if(cartOrderDtoList == null || cartOrderDtoList.size() == 0) {

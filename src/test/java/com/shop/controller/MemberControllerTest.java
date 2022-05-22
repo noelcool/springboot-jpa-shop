@@ -20,7 +20,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties.bk")
 class MemberControllerTest {
 
     @Autowired
@@ -50,7 +50,7 @@ class MemberControllerTest {
         this.createMember(email, password);
         mockMvc.perform(
                 formLogin().userParameter("email").
-                loginProcessingUrl("/members/login").
+                loginProcessingUrl("/login").
                 user(email).
                 password(password)).
                 andExpect(SecurityMockMvcResultMatchers.authenticated());
@@ -64,7 +64,7 @@ class MemberControllerTest {
         this.createMember(email, password);
         mockMvc.perform(
                         formLogin().userParameter("email").
-                                loginProcessingUrl("/members/login").
+                                loginProcessingUrl("/login").
                                 user(email).
                                 password("12345")).
                 andExpect(SecurityMockMvcResultMatchers.unauthenticated());

@@ -3,6 +3,7 @@ package com.shop.controller;
 import com.shop.domain.dto.OrderDto;
 import com.shop.domain.dto.OrderHistDto;
 import com.shop.service.OrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +23,13 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Tag(name = "orders", description = "주문 API")
+@RequestMapping(path = "/order")
 public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping(value = "/order")
+    @PostMapping(value = "")
     public @ResponseBody ResponseEntity order (@RequestBody @Valid OrderDto orderDto,
                                                BindingResult bindingResult,
                                                Principal principal) {
@@ -50,7 +53,7 @@ public class OrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/orders", "/orders/{page}"})
+    @GetMapping(value = {"/list", "/{page}"})
     public String orderHist(
             @PathVariable("page") Optional<Integer> page,
             Principal principal,
@@ -63,7 +66,7 @@ public class OrderController {
         return "order/orderHist";
     }
 
-    @PostMapping("/order/{orderId}/cancel")
+    @PostMapping("/{orderId}/cancel")
     public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId, Principal principal) {
         if(!orderService.validateOrder(orderId, principal.getName())) {
             return new ResponseEntity<String>("주문 취소 권한이 없습니다", HttpStatus.FORBIDDEN);

@@ -36,12 +36,12 @@
                 cache   : false,
                 success  : function(result, status){
                     alert("주문이 취소 되었습니다.");
-                    location.href='/orders/' + [[${page}]];
+                    location.href='/order/list/' + [[${page}]];
                 },
                 error : function(jqXHR, status, error){
                     if(jqXHR.status == '401'){
                         alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
+                        location.href='/login';
                     } else{
                         alert(jqXHR.responseText);
                     }
@@ -125,17 +125,17 @@
         <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
+                <a th:href="@{'/order/list/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
                     <span aria-hidden='true'>Previous</span>
                 </a>
             </li>
 
             <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
-                <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                <a th:href="@{'/order/list/' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
             </li>
 
             <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="page-link">
+                <a th:href="@{'/order/list/' + ${orders.number+1}}" aria-label='Next' class="page-link">
                     <span aria-hidden='true'>Next</span>
                 </a>
             </li>

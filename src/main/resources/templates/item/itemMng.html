@@ -20,7 +20,7 @@
             var searchBy = $("#searchBy").val();
             var searchQuery = $("#searchQuery").val();
 
-            location.href="/admin/items/" + page + "?searchDateType=" + searchDateType
+            location.href="/admin/item/list/" + page + "?searchDateType=" + searchDateType
                 + "&searchSellStatus=" + searchSellStatus
                 + "&searchBy=" + searchBy
                 + "&searchQuery=" + searchQuery;
@@ -40,7 +40,7 @@
 
 <div layout:fragment="content">
 
-    <form th:action="@{'/admin/items/' + ${items.number}}" role="form" method="get" th:object="${items}">
+    <form th:action="@{'/admin/item/list/' + ${items.number}}" role="form" method="get" th:object="${items}">
         <table class="table">
             <thead>
             <tr>
