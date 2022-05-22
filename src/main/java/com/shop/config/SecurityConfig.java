@@ -29,11 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 failureUrl("/login/error").
                 and().
                 logout().
-                logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")).
+                logoutRequestMatcher(new AntPathRequestMatcher("/logout")).
                 logoutSuccessUrl("/");
 
         http.authorizeRequests().
-                mvcMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**").permitAll().
+                mvcMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**", "/logout", "/logout/**").permitAll().
                 mvcMatchers("/admin/**").hasRole("ADMIN").
                 anyRequest().authenticated();
 
