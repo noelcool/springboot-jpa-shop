@@ -14,14 +14,20 @@ spring.jpa.database-platform=org.hibernate.dialect.MariaDB102Dialect
 spring.devtools.livereload.enabled=true
 spring.thymeleaf.cache=false
 
-# ?? 1?? ?? ???
 spring.servlet.multipart.max-file-size=20MB
-
-# ??? ?? ?? ??
 spring.servlet.multipart.max-request-size=100MB
-
-# ?? ??? ??? ??
 itemImgLocation=/Users/noel/Documents/github_init/shop-img-resource/
-
-# ??? ??? ??
 uploadPath=file:///Users/noel/Documents/github_init/shop-img-resource/
+
+springdoc.version=@project.version@
+springdoc.api-docs.path=/api-docs
+springdoc.default-consumes-media-type=application/json
+springdoc.default-produces-media-type=application/json
+springdoc.swagger-ui.operations-sorter=alpha
+springdoc.swagger-ui.tags-sorter=alpha
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.disable-swagger-default-url=true
+springdoc.swagger-ui.display-query-params-without-oauth2=true
+springdoc.swagger-ui.doc-expansion=none
+springdoc.paths-to-match=/cart/**
+
