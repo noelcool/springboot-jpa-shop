@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@Tag(name = "member", description = "회원 API")
+@Tag(name = "members", description = "회원 API")
 @RequestMapping("/members")
 public class MemberController {
 

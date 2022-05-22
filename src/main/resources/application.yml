@@ -11,7 +11,7 @@ springdoc:
     path: /api-docs
   default-consumes-media-type: application/json
   version: '@project.version@'
-  paths-to-match: /cart/**, /cartItem/**, /admin/**, /item/**
+  paths-to-match: /**
 itemImgLocation: /Users/noel/Documents/github_init/shop-img-resource/
 uploadPath: file:///Users/noel/Documents/github_init/shop-img-resource/
 spring:
