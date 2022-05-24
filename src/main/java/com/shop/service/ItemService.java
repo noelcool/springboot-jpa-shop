@@ -47,12 +47,7 @@ public class ItemService {
     @Transactional(readOnly = true)
     public ItemFormDto getItem(Long itemId) {
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
-//        List<ItemImgDto> itemImgDtoList = new ArrayList<>();
-//        for (ItemImg itemImg : itemImgList) {
-//            ItemImgDto itemImgDto = ItemImgDto.of(itemImg);
-//            itemImgDtoList.add(itemImgDto);
-//        }
-        //TODO - 위랑 같게 동작하는지 확인
+
         List<ItemImgDto> itemImgDtoList = itemImgList.stream().map(ItemImgDto::of).collect(Collectors.toList());
 
         Item item = itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);

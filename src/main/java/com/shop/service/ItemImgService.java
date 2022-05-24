@@ -2,6 +2,7 @@ package com.shop.service;
 
 import com.shop.domain.entity.ItemImg;
 import com.shop.repository.ItemImgRepository;
+import com.shop.util.ShopProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import javax.persistence.EntityNotFoundException;
 @Transactional
 public class ItemImgService {
 
-    @Value("${itemImgLocation}")
-    private String itemImgLocation;
+//    @Value("D:/999_noel/shop-img-resource")
+//    private String itemImgLocation;
 
     private final ItemImgRepository itemImgRepository;
 
@@ -28,7 +29,7 @@ public class ItemImgService {
         String imgName = "";
         String imgUrl = "";
         if(!StringUtils.isEmpty(oriImgName)) {
-            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            imgName = fileService.uploadFile(ShopProperties.getImageUploadPath(), oriImgName, itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
         }
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
@@ -39,10 +40,10 @@ public class ItemImgService {
         if(!itemImgFile.isEmpty()) {
             ItemImg savedItemImg = itemImgRepository.findById(itemImgId).orElseThrow(EntityNotFoundException::new);
             if(!StringUtils.isEmpty(savedItemImg.getImgName())) {
-                fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+                fileService.deleteFile(ShopProperties.getImageUploadPath() + "/" + savedItemImg.getImgName());
             }
             String oriImgName = itemImgFile.getOriginalFilename();
-            String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            String imgName = fileService.uploadFile(ShopProperties.getImageUploadPath(), oriImgName, itemImgFile.getBytes());
             String imgUrl = "/images/item/" + imgName;
             // 변경된 상품 이미지 set, save를 호출하지 않고 데이텨 변경 감지로 처리(update)
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);

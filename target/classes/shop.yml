@@ -1,0 +1,4 @@
+shop:
+  image:
+    upload-path: D:/999_noel/shop-img-resource/
+    url: http://localhost:80/images/item/

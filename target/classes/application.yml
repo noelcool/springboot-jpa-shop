@@ -10,7 +10,7 @@ springdoc:
   api-docs:
     path: /api-docs
   default-consumes-media-type: application/json
-  version: '@project.version@'
+  version: '0.0.1-SNAPSHOT'
   paths-to-match: /**
 itemImgLocation: /Users/noel/Documents/github_init/shop-img-resource/
 uploadPath: file:///Users/noel/Documents/github_init/shop-img-resource/
