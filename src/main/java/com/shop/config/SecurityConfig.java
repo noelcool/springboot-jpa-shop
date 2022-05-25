@@ -35,7 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().
                 mvcMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**", "/logout", "/logout/**").permitAll().
                 mvcMatchers("/admin/**").hasRole("ADMIN").
-                anyRequest().authenticated();
+                antMatchers("/api/**").hasRole("ADMIN").
+                anyRequest().authenticated().
+                and().
+                csrf().disable();
 
         http.exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());
@@ -48,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/images/**", "/swagger-resources/**");
     }
 
     @Override
