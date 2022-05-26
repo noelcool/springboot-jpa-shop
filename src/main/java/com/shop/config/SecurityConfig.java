@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -24,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { // http 요청에 대한 보안
         http.formLogin().
                 loginPage("/login").
-                defaultSuccessUrl("/").
+                defaultSuccessUrl("/", true).
                 usernameParameter("email").
                 failureUrl("/login/error").
                 and().
@@ -32,13 +34,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 logoutRequestMatcher(new AntPathRequestMatcher("/logout")).
                 logoutSuccessUrl("/");
 
-        http.authorizeRequests().
-                mvcMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**", "/logout", "/logout/**").permitAll().
-                mvcMatchers("/admin/**").hasRole("ADMIN").
-                antMatchers("/api/**").hasRole("ADMIN").
-                anyRequest().authenticated().
-                and().
-                csrf().disable();
+        http
+            .authorizeRequests()
+                .antMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**", "/logout", "/logout/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            .and()
+                .csrf().disable();
+
+        http.csrf()
+                .requireCsrfProtectionMatcher(new CsrfRequireMatcher())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());

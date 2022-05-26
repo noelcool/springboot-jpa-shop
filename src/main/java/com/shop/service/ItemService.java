@@ -3,7 +3,7 @@ package com.shop.service;
 import com.shop.domain.dto.ItemFormDto;
 import com.shop.domain.dto.ItemImgDto;
 import com.shop.domain.dto.MainItemDto;
-import com.shop.domain.dto.api.ItemRequest;
+import com.shop.domain.dto.request.ItemRequest;
 import com.shop.domain.dto.search.ItemSearchDto;
 import com.shop.domain.entity.Item;
 import com.shop.domain.entity.ItemImg;
@@ -34,14 +34,22 @@ public class ItemService {
         // 상품 등록
         Item item = itemDto.createItem();
         itemRepository.save(item);
-        // 이미지 등록
-        for(int i=0; i<itemImgList.size(); i++) {
-            ItemImg itemImg = new ItemImg();
-            itemImg.setItem(item);
-            if(i == 0) itemImg.setRepImgYn("Y"); // 첫번쨰 이미지를 대표 이미지로 지정
-            else itemImg.setRepImgYn("N");
-            itemImgService.saveItemImg(itemImg, itemImgList.get(i));
-        }
+        itemImgList.forEach(i -> {
+            if(!i.getOriginalFilename().equals("")) {
+                ItemImg itemImg = new ItemImg();
+                if(itemImgList.get(0).getOriginalFilename().equals(i.getOriginalFilename())) {
+                    itemImg.setRepImgYn("Y"); // 첫번쨰 이미지를 대표 이미지로 지정
+                } else {
+                    itemImg.setRepImgYn("N");
+                }
+                itemImg.setItem(item);
+                try {
+                    itemImgService.saveItemImg(itemImg, i);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         return item.getId();
     }
 
@@ -65,6 +73,7 @@ public class ItemService {
 
         for(int i=0; i<itemImgFileList.size(); i++) {
            itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+
         }
         return item.getId();
     }
@@ -79,7 +88,18 @@ public class ItemService {
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
     }
 
-    public boolean insert(ItemRequest item) {
-        return true;
+    public List<ItemFormDto> findAll() {
+        List<ItemFormDto> temp = itemRepository.findAll().stream().map(ItemFormDto::of).collect(Collectors.toList());
+        temp.forEach(t -> {
+            List<Long> itemImgIds = itemImgRepository.findByItemIdOrderByIdAsc(t.getId()).stream().map(ItemImg::getId).collect(Collectors.toList());
+            //List<ItemImgDto> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(t.getId()).stream().map(ItemImgDto::of).collect(Collectors.toList());
+            //t.setItemImgDtoList(itemImgList);
+            t.setItemImgIds(itemImgIds);
+        });
+        return temp;
+    }
+
+    public List<ItemFormDto> insert(ItemRequest item) {
+        return null;
     }
 }
