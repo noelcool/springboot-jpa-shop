@@ -1,12 +1,15 @@
 package com.shop.service;
 
+import com.shop.domain.constant.ErrorCode;
 import com.shop.domain.dto.ItemFormDto;
 import com.shop.domain.dto.ItemImgDto;
 import com.shop.domain.dto.MainItemDto;
+import com.shop.domain.dto.api.ItemDto;
 import com.shop.domain.dto.request.ItemRequest;
 import com.shop.domain.dto.search.ItemSearchDto;
 import com.shop.domain.entity.Item;
 import com.shop.domain.entity.ItemImg;
+import com.shop.exception.NotFoundException;
 import com.shop.repository.ItemImgRepository;
 import com.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,5 +105,13 @@ public class ItemService {
 
     public List<ItemFormDto> insert(ItemRequest item) {
         return null;
+    }
+
+    public ItemFormDto findById(long id) {
+        ItemFormDto temp = itemRepository.findById(id).map(ItemFormDto::of).
+                orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_EXCEPTION.getMessage()));
+        List<Long> itemImgIds = itemImgRepository.findByItemIdOrderByIdAsc(temp.getId()).stream().map(ItemImg::getId).collect(Collectors.toList());
+        temp.setItemImgIds(itemImgIds);
+        return temp;
     }
 }

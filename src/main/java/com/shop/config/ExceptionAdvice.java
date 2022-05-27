@@ -14,14 +14,14 @@ public class ExceptionAdvice {
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<ExceptionResponse> NotFoundServerException(NotFoundException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        ExceptionResponse response = new ExceptionResponse(status.value(), e.toString());
+        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return ResponseEntity.status(status).body(response);
     }
 
     @ExceptionHandler(OutOfStockException.class)
     protected ResponseEntity<ExceptionResponse> OutOfStockServerException(OutOfStockException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        ExceptionResponse response = new ExceptionResponse(status.value(), e.toString());
+        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return ResponseEntity.status(status).body(response);
     }
 

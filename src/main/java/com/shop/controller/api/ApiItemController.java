@@ -1,15 +1,19 @@
 package com.shop.controller.api;
 
 import com.shop.domain.dto.ItemFormDto;
+import com.shop.domain.dto.api.ItemDto;
 import com.shop.domain.dto.request.ItemRequest;
 import com.shop.domain.dto.response.BaseResponse;
+import com.shop.domain.dto.response.CommonResponse;
 import com.shop.domain.dto.response.DataResponse;
 import com.shop.service.ItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //@Validated
 @RequiredArgsConstructor
@@ -22,7 +26,6 @@ public class ApiItemController {
     @PostMapping(value = "")
     public BaseResponse insert(@RequestBody ItemRequest item) {
         List<ItemFormDto> itemList = itemService.insert(item);
-
         if(itemList != null) {
             return new DataResponse<>(itemList);
         }
@@ -36,6 +39,12 @@ public class ApiItemController {
             return new DataResponse<>(itemList);
         }
         return new BaseResponse("아이템 목록이 비어있습니다");
+    }
+
+    @GetMapping(value = "/{id}")
+    public CommonResponse<ItemFormDto> findById(@PathVariable("id") long id) {
+        ItemFormDto oItem = itemService.findById(id);
+        return new CommonResponse<>(oItem);
     }
 
 
