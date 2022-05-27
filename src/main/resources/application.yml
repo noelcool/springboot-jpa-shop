@@ -12,6 +12,8 @@ springdoc:
     doc-expansion: none
     csrf:
       enabled: true
+    syntax-highlight:
+      theme: agate
   paths-to-match:
     - /api/**
 spring:

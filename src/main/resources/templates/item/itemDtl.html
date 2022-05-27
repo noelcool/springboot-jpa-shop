@@ -193,7 +193,8 @@
         </div>
     </div>
 
-    <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+    <div id="test" th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+        <span th:data-id="${itemImg.id}"></span>
         <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
     </div>
 

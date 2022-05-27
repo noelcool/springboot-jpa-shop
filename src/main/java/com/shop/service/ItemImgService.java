@@ -28,8 +28,12 @@ public class ItemImgService {
         String oriImgName = itemImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
+        String imgPath = "";
         if(!StringUtils.isEmpty(oriImgName)) {
-            imgName = fileService.uploadFile(ShopProperties.getImageUploadPath(), oriImgName, itemImgFile.getBytes());
+            imgPath = ShopProperties.getImageUploadPath() + "/item";
+            imgName = fileService.uploadFile(imgPath,
+                    oriImgName,
+                    itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
         }
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
@@ -38,9 +42,12 @@ public class ItemImgService {
 
     public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception {
         if(!itemImgFile.isEmpty()) {
-            ItemImg savedItemImg = itemImgRepository.findById(itemImgId).orElseThrow(EntityNotFoundException::new);
+            String imgPath = ShopProperties.getImageUploadPath() + "/item";
+            ItemImg savedItemImg = itemImgRepository.findById(itemImgId).
+                    orElseThrow(EntityNotFoundException::new);
+
             if(!StringUtils.isEmpty(savedItemImg.getImgName())) {
-                fileService.deleteFile(ShopProperties.getImageUploadPath() + "/" + savedItemImg.getImgName());
+                fileService.deleteFile(imgPath + "/" + savedItemImg.getImgName());
             }
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(ShopProperties.getImageUploadPath(), oriImgName, itemImgFile.getBytes());
