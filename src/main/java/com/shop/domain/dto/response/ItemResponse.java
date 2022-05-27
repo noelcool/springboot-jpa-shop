@@ -1,9 +1,9 @@
-package com.shop.domain.dto.request;
+package com.shop.domain.dto.response;
 
 import com.shop.domain.constant.ItemSellStatus;
 import com.shop.domain.dto.api.ItemDto;
 
-public record ItemRequest(
+public record ItemResponse(
         String itemNm,
         Integer price,
         Integer stockNumber,
@@ -11,14 +11,14 @@ public record ItemRequest(
         ItemSellStatus itemSellStatus
 ) {
 
-    public static ItemRequest of(
+    public static ItemResponse of(
             String itemNm,
             Integer price,
             Integer stockNumber,
             String itemDetail,
             ItemSellStatus itemSellStatus
     ) {
-        return new ItemRequest(
+        return new ItemResponse(
                 itemNm,
                 price,
                 stockNumber,
@@ -27,15 +27,14 @@ public record ItemRequest(
         );
     }
 
-    public ItemDto toDto() {
-        return ItemDto.of(
-                this.itemNm(),
-                this.price(),
-                this.stockNumber(),
-                this.itemDetail(),
-                this.itemSellStatus(),
-                null,
-                null
+    public static ItemResponse from(ItemDto itemDto) {
+        if(itemDto == null) return null;
+        return ItemResponse.of(
+                itemDto.itemNm(),
+                itemDto.price(),
+                itemDto.stockNumber(),
+                itemDto.itemDetail(),
+                itemDto.itemSellStatus()
         );
     }
 }
