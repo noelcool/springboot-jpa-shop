@@ -33,12 +33,9 @@ public class ApiItemController {
     }
 
     @GetMapping(value = "")
-    public BaseResponse findAll() {
+    public CommonResponse<List<ItemFormDto>> findAll() {
         List<ItemFormDto> itemList = itemService.findAll();
-        if(itemList != null) {
-            return new DataResponse<>(itemList);
-        }
-        return new BaseResponse("아이템 목록이 비어있습니다");
+        return new CommonResponse<>(itemList);
     }
 
     @GetMapping(value = "/{id}")
