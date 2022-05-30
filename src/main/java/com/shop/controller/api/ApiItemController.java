@@ -1,6 +1,8 @@
 package com.shop.controller.api;
 
+import com.shop.domain.constant.MessageUtils;
 import com.shop.domain.dto.ItemFormDto;
+import com.shop.domain.dto.ItemSimpleDto;
 import com.shop.domain.dto.api.ItemDto;
 import com.shop.domain.dto.request.ItemRequest;
 import com.shop.domain.dto.response.BaseResponse;
@@ -25,16 +27,22 @@ public class ApiItemController {
 
     @PostMapping(value = "")
     public BaseResponse insert(@RequestBody ItemRequest item) {
-        List<ItemFormDto> itemList = itemService.insert(item);
-        if(itemList != null) {
-            return new DataResponse<>(itemList);
+        int result = itemService.insert(item);
+        if(result > 0) {
+            return new BaseResponse(MessageUtils.SUCCESS.name(), "");
         }
-        return new BaseResponse("아이템 목록이 비어있습니다");
+        return new BaseResponse(MessageUtils.FAIL.name(), "");
     }
 
     @GetMapping(value = "")
     public CommonResponse<List<ItemFormDto>> findAll() {
         List<ItemFormDto> itemList = itemService.findAll();
+        return new CommonResponse<>(itemList);
+    }
+
+    @GetMapping(value = "/simple")
+    public CommonResponse<List<ItemSimpleDto>> findAllSimple() {
+        List<ItemSimpleDto> itemList = itemService.findAllSimple();
         return new CommonResponse<>(itemList);
     }
 

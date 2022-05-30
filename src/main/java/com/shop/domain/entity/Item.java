@@ -57,7 +57,6 @@ public class Item extends BaseEntity {
     }
 
     public Item() {
-
     }
 
     public void updateItem(ItemFormDto dto) {

@@ -39,13 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/members/**", "/item/**", "/images/**", "/login", "/login/**", "/logout", "/logout/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/**").hasRole("ADMIN")
-                .anyRequest().authenticated();
-//            .and()
-//                .csrf().disable();
+                .anyRequest().authenticated()
+            .and()
+                .csrf().disable();
 
-//        http.csrf()
-//                .requireCsrfProtectionMatcher(new CsrfRequireMatcher())
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        http.csrf()
+                .requireCsrfProtectionMatcher(new CsrfRequireMatcher())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.exceptionHandling().
                 authenticationEntryPoint(new CustomAuthenticationEntryPoint());

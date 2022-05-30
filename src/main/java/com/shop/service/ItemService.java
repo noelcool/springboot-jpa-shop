@@ -1,8 +1,10 @@
 package com.shop.service;
 
 import com.shop.domain.constant.ErrorCode;
+import com.shop.domain.constant.ItemSellStatus;
 import com.shop.domain.dto.ItemFormDto;
 import com.shop.domain.dto.ItemImgDto;
+import com.shop.domain.dto.ItemSimpleDto;
 import com.shop.domain.dto.MainItemDto;
 import com.shop.domain.dto.api.ItemDto;
 import com.shop.domain.dto.request.ItemRequest;
@@ -20,12 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ItemService {
 
@@ -57,7 +60,6 @@ public class ItemService {
         return item.getId();
     }
 
-    @Transactional(readOnly = true)
     public ItemFormDto getItem(Long itemId) {
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
 
@@ -93,18 +95,29 @@ public class ItemService {
     }
 
     public List<ItemFormDto> findAll() {
-        List<ItemFormDto> temp = itemRepository.findAll().stream().map(ItemFormDto::of).collect(Collectors.toList());
-        temp.forEach(t -> {
+        List<ItemFormDto> itemFormDtoList = itemRepository.findAll().stream().map(ItemFormDto::of).collect(Collectors.toList());
+        itemFormDtoList.forEach(t -> {
             List<Long> itemImgIds = itemImgRepository.findByItemIdOrderByIdAsc(t.getId()).stream().map(ItemImg::getId).collect(Collectors.toList());
             //List<ItemImgDto> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(t.getId()).stream().map(ItemImgDto::of).collect(Collectors.toList());
             //t.setItemImgDtoList(itemImgList);
             t.setItemImgIds(itemImgIds);
         });
-        return temp;
+        return itemFormDtoList;
     }
 
-    public List<ItemFormDto> insert(ItemRequest item) {
-        return null;
+    public List<ItemSimpleDto> findAllSimple() {
+        return itemRepository.findAll().stream().map(ItemSimpleDto::of).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public int insert(ItemRequest item) {
+        Item.ItemBuilder builder = Item.builder();
+        builder.itemNm(item.itemNm());
+        builder.price(item.price());
+        builder.stockNumber(item.stockNumber());
+        builder.itemDetail(item.itemDetail());
+        builder.itemSellStatus(item.itemSellStatus());
+        return itemRepository.save(builder.build()) != null ? 1 : 0;
     }
 
     public ItemFormDto findById(long id) {

@@ -2,6 +2,8 @@ package com.shop.domain.dto.api;
 
 import com.shop.domain.constant.ItemSellStatus;
 import com.shop.domain.dto.ItemImgDto;
+import com.shop.domain.entity.Item;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
@@ -35,6 +37,11 @@ public record ItemDto(
         );
     }
 
+    private static ModelMapper modelMapper = new ModelMapper();
+
+    public static ItemDto of(Item item) {
+        return modelMapper.map(item, ItemDto.class);
+    }
 
 
 
